@@ -1,0 +1,14 @@
+# Dune
+_build/
+.merlin
+*.install
+
+# opam
+_opam/
+
+# Bisect_ppx
+_coverage/
+
+# editor
+.vscode/
+*.swp
