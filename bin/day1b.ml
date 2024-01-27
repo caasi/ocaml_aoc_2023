@@ -1,3 +1,5 @@
+(** [transform_digit cs] transforms the prefix of the char list [cs] into a
+    digit and return a new char list. *)
 let transform_digit list =
   match list with
   | [] -> []
@@ -14,6 +16,9 @@ let transform_digit list =
   | 'n' :: 'i' :: 'n' :: 'e' :: xs -> '9' :: xs
   | _ -> list
 
+(** [transform_digit_backward cs] transforms the prefix of the char list [cs]
+    into a digit and return a new char list. But numbers are spelled backward.
+    *)
 let transform_digit_backward list =
   match list with
   | [] -> []
@@ -35,6 +40,7 @@ let is_digit c =
   | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' -> true
   | _ -> false
 
+(** [find_first cs] finds the first digit from a char list [cs]. *)
 let rec find_first f list =
   match f list with
   | [] -> []
