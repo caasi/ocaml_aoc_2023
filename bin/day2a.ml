@@ -20,8 +20,11 @@ let sum_games =
 (* main *)
 let main () =
   let%lwt input = Lwt_io.read Lwt_io.stdin in
-  let games = List.map merge_game (Cube.eval input) in
-  let sum = sum_games games in
+  let games = Cube.eval input in
+  let result = List.map merge_game games in
+  let sum = sum_games result in
+  Cube.pp_print_games Format.std_formatter games ;
+  Format.print_flush () ;
   Lwt_io.printf "%d" sum
 
 let () = Lwt_main.run @@ main ()

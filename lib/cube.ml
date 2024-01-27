@@ -1,5 +1,13 @@
 open Angstrom
 
+type color = int * int * int
+
+type round = color list
+
+type game = int * round list
+
+type games = game list
+
 let is_digit = function '0' .. '9' -> true | _ -> false
 
 (* parsers *)
@@ -31,6 +39,31 @@ let game =
 
 let games = sep_by1 end_of_line game
 
+(* pretty printers *)
+open Format
+
+let pp_print_color fmt (r, g, b) = fprintf fmt "(R: %d, G: %d, B: %d)" r g b
+
+let pp_print_round fmt round =
+  fprintf fmt "[" ;
+  pp_open_box fmt 1 ;
+  let print_sep fmt () = pp_print_string fmt ", " ; pp_print_cut fmt () in
+  pp_print_list ~pp_sep:print_sep pp_print_color fmt round ;
+  pp_close_box fmt () ;
+  fprintf fmt "]"
+
+let pp_print_game fmt (id, rounds) =
+  fprintf fmt "Game %d: " id ;
+  pp_open_box fmt 1 ;
+  let print_sep fmt () = pp_print_string fmt "; " ; pp_print_cut fmt () in
+  pp_print_list ~pp_sep:print_sep pp_print_round fmt rounds ;
+  pp_close_box fmt ()
+
+let pp_print_games fmt games =
+  pp_print_list ~pp_sep:pp_print_newline pp_print_game fmt games ;
+  pp_print_newline fmt ()
+
+(* evaluator *)
 let eval (str : string) =
   match parse_string ~consume:All games str with
   | Ok v ->
