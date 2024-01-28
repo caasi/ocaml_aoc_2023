@@ -1,6 +1,6 @@
 (executables
- (public_names day1a day1b day2a day2b)
- (names day1a day1b day2a day2b)
+ (public_names day1a day1b day2a day2b day3a)
+ (names day1a day1b day2a day2b day3a)
  (libraries lwt.unix lwt_ppx angstrom aoc)
  (preprocess
   (pps lwt_ppx)))
