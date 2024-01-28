@@ -3,6 +3,8 @@
 (** The Cube module is for parsing cube games in day 2. *)
 module Cube = Cube
 
+module Schematic = Schematic
+
 (** [explode_string s] transforms string [s] into a char list. *)
 let explode_string s = List.init (String.length s) (String.get s)
 
