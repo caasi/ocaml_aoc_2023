@@ -1,9 +1,13 @@
+(** ['a indexed] is a value ['a] with an integer index. *)
 type 'a indexed = int * 'a
 
 type 'a t = 'a indexed list
 
-let empty = []
+(** [empty] is an empty sparse list. *)
+let empty : 'a t = []
 
+(** [update index x xs] updates the value at [index] of a sparse list [xs] to a
+    new value [x]. *)
 let rec update index x = function
   | [] ->
       [(index, x)]
@@ -14,6 +18,7 @@ let rec update index x = function
   | hd :: tl ->
       hd :: update index x tl
 
+(** [get index xs] gets the value at [index] of a sparse list [xs]. *)
 let rec get index = function
   | [] ->
       None
