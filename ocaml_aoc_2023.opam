@@ -11,6 +11,8 @@ bug-reports: "https://github.com/caasi/ocaml_aoc_2023/issues"
 depends: [
   "ocaml"
   "dune" {>= "3.12"}
+  "lwt_ppx"
+  "angstrom"
   "odoc" {with-doc}
 ]
 build: [
