@@ -1,31 +1,17 @@
 open Aoc
 
+(* calculations *)
 let sparse_map_of_item_coord_list list =
   let open Schematic in
   let rec aux acc = function
     | [] ->
         acc
     | SymCoord (x, y) :: tl ->
-        let new_map =
-          let new_row =
-            match SparseList.get y acc with Some row -> row | None -> []
-          in
-          SparseList.insert_or_replace y
-            (SparseList.insert_or_replace x true new_row)
-            acc
-        in
-        aux new_map tl
+        aux (SparseMap.update x y true acc) tl
     | _ :: tl ->
         aux acc tl
   in
-  aux [] list
-
-let sparse_map_get x y map =
-  match SparseList.get y map with
-  | Some row ->
-      SparseList.get x row
-  | None ->
-      None
+  aux SparseMap.empty list
 
 (* main *)
 let main () =
@@ -33,7 +19,7 @@ let main () =
   let schema = Schematic.eval input in
   let item_coord_list = Schematic.item_coord_of_schematic schema in
   let sparse_map = sparse_map_of_item_coord_list item_coord_list in
-  ( match sparse_map_get 133 138 sparse_map with
+  ( match SparseMap.get 133 138 sparse_map with
   | None ->
       ()
   | Some _ ->

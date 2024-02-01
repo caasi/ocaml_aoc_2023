@@ -2,6 +2,8 @@ type 'a indexed = int * 'a
 
 type 'a t = 'a indexed list
 
+let empty = []
+
 let rec insert_or_replace index x = function
   | [] ->
       [(index, x)]

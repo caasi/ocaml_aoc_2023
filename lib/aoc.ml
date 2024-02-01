@@ -5,6 +5,7 @@ module Cube = Cube
 
 module Schematic = Schematic
 module SparseList = Sparse_list
+module SparseMap = Sparse_map
 
 (** [explode_string s] transforms string [s] into a char list. *)
 let explode_string s = List.init (String.length s) (String.get s)
