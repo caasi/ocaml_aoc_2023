@@ -4,6 +4,27 @@ type row = item list
 
 type t = row list
 
+type item_coord = NumCoord of int * int * int | SymCoord of int * int
+
+let item_coord_of_schematic schema =
+  let rec aux_row acc y x = function
+    | [] ->
+        acc
+    | Gap width :: rest ->
+        aux_row acc y (x + width) rest
+    | Num (value, width) :: rest ->
+        aux_row (NumCoord (x, y, value) :: acc) y (x + width) rest
+    | Sym :: rest ->
+        aux_row (SymCoord (x, y) :: acc) y (x + 1) rest
+  in
+  let rec aux acc y = function
+    | [] ->
+        acc
+    | row :: rest ->
+        aux (aux_row acc y 0 row) (y + 1) rest
+  in
+  aux [] 0 schema
+
 (* parsers *)
 open Angstrom
 
@@ -42,6 +63,15 @@ let pp_print_row fmt row =
 
 let pp_print_schematic fmt schema =
   pp_print_list ~pp_sep:pp_print_newline pp_print_row fmt schema
+
+let pp_print_item_coord fmt = function
+  | NumCoord (x, y, value) ->
+      fprintf fmt "NumCoord (%d, %d, %d)" x y value
+  | SymCoord (x, y) ->
+      fprintf fmt "SymCoord (%d, %d)" x y
+
+let pp_print_item_coords fmt coords =
+  pp_print_list pp_print_item_coord fmt coords
 
 (* evaluator *)
 let eval str =
