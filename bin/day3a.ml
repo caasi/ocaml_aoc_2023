@@ -7,7 +7,7 @@ let sparse_map_of_item_coord_list list =
     | [] ->
         acc
     | SymCoord (x, y) :: tl ->
-        aux (SparseMap.update x y true acc) tl
+        aux (SparseMap.update x y (fun _ -> true) acc) tl
     | _ :: tl ->
         aux acc tl
   in

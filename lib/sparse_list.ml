@@ -6,17 +6,17 @@ type 'a t = 'a indexed list
 (** [empty] is an empty sparse list. *)
 let empty : 'a t = []
 
-(** [update index x xs] updates the value at [index] of a sparse list [xs] to a
-    new value [x]. *)
-let rec update index x = function
+(** [update index f xs] updates the value at [index] of a sparse list [xs] to a
+    update function [f]. *)
+let rec update index f = function
   | [] ->
-      [(index, x)]
-  | (i, _) :: tl when i = index ->
-      (i, x) :: tl
+      [(index, f None)]
+  | (i, y) :: tl when i = index ->
+      (i, f (Some y)) :: tl
   | (i, y) :: tl when i < index ->
-      (i, y) :: (index, x) :: tl
+      (i, y) :: (index, f None) :: tl
   | hd :: tl ->
-      hd :: update index x tl
+      hd :: update index f tl
 
 (** [get index xs] gets the value at [index] of a sparse list [xs]. *)
 let rec get index = function
