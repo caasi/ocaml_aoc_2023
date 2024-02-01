@@ -11,7 +11,8 @@ let is_gap = function '.' -> true | _ -> false
 
 let is_digit = function '0' .. '9' -> true | _ -> false
 
-let is_symbol c = (not (is_gap c)) && not (is_digit c)
+let is_symbol c =
+  (not (is_gap c)) && (not (is_digit c)) && c <> '\n' && c <> '\r'
 
 let gap = lift (fun s -> Gap (String.length s)) (take_while1 is_gap)
 
