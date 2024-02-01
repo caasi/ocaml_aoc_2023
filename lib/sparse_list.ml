@@ -4,7 +4,7 @@ type 'a t = 'a indexed list
 
 let empty = []
 
-let rec insert_or_replace index x = function
+let rec update index x = function
   | [] ->
       [(index, x)]
   | (i, _) :: tl when i = index ->
@@ -12,7 +12,7 @@ let rec insert_or_replace index x = function
   | (i, y) :: tl when i < index ->
       (i, y) :: (index, x) :: tl
   | hd :: tl ->
-      hd :: insert_or_replace index x tl
+      hd :: update index x tl
 
 let rec get index = function
   | [] ->
