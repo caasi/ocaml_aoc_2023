@@ -28,3 +28,7 @@ let rec get index = function
       Some x
   | _ :: tl ->
       get index tl
+
+let pp_print ?(pp_sep = Format.pp_print_space) pp_v =
+  Format.pp_print_list ~pp_sep (fun ppf (i, x) ->
+      Format.fprintf ppf "(%i: %a)" i pp_v x )

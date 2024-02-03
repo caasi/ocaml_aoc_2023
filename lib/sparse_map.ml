@@ -14,3 +14,6 @@ let update x y f map =
 (** [get x y map] gets the value at ([x], [y]) of a 2D sparse map [map]. *)
 let get x y map =
   match SL.get y map with Some row -> SL.get x row | None -> None
+
+let pp_print ?(pp_sep = Format.pp_print_space) pp_v =
+  SL.pp_print ~pp_sep (SL.pp_print ~pp_sep pp_v)
