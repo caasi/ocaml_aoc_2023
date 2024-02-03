@@ -13,8 +13,8 @@ let rec update index f = function
       [(index, f None)]
   | (i, y) :: tl when i = index ->
       (i, f (Some y)) :: tl
-  | (i, y) :: tl when i < index ->
-      (i, y) :: (index, f None) :: tl
+  | (i, y) :: tl when i > index ->
+      (index, f None) :: (i, y) :: tl
   | hd :: tl ->
       hd :: update index f tl
 
