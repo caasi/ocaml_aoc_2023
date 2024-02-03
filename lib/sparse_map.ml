@@ -15,5 +15,5 @@ let update x y f map =
 let get x y map =
   match SL.get y map with Some row -> SL.get x row | None -> None
 
-let pp_print ?(pp_sep = Format.pp_print_space) pp_v =
+let pp_print ?(pp_sep = Format.pp_print_cut) pp_v =
   SL.pp_print ~pp_sep (SL.pp_print ~pp_sep pp_v)
