@@ -6,6 +6,12 @@ type t = row list
 
 type item_coord = NumCoord of int * int * int * int | SymCoord of int * int
 
+let get_value = function
+  | NumCoord (_, _, value, _) ->
+      value
+  | SymCoord (_, _) ->
+      1
+
 let item_coord_of_schematic schema =
   let rec aux_row acc y x = function
     | [] ->
@@ -24,6 +30,15 @@ let item_coord_of_schematic schema =
         aux (aux_row acc y 0 row) (y + 1) rest
   in
   aux [] 0 schema
+
+let range_of_item_coord = function
+  | NumCoord (x, y, _, width) ->
+      List.concat
+        [ List.init (width + 2) (fun i -> (x + i - 1, y - 1))
+        ; [(x - 1, y); (x + width, y)]
+        ; List.init (width + 2) (fun i -> (x + i - 1, y + 1)) ]
+  | SymCoord (_, _) ->
+      []
 
 (* parsers *)
 open Angstrom
