@@ -11,6 +11,14 @@ let update x y f map =
   let update_with f = function None -> f SL.empty | Some row -> f row in
   SL.update y (update_with @@ SL.update x f) map
 
+(** [map f map] maps a function [f] over a 2D sparse map [map]. *)
+let map_index f =
+  let go g y = g (fun x -> f x y) in
+  SL.map_index (SL.map_index |> go)
+
+(** [fold_left f acc map] folds a function [f] over a 2D sparse map [map]. *)
+let fold_left f = SL.fold_left (SL.fold_left f)
+
 (** [get x y map] gets the value at ([x], [y]) of a 2D sparse map [map]. *)
 let get x y map =
   match SL.get y map with Some row -> SL.get x row | None -> None

@@ -18,6 +18,21 @@ let rec update index f = function
   | hd :: tl ->
       hd :: update index f tl
 
+(** [map_index f xs] maps a function [f] over a sparse list [xs] with an item
+    and it's index. *)
+let rec map_index f = function
+  | [] ->
+      []
+  | (i, x) :: tl ->
+      (i, f i x) :: map_index f tl
+
+(** [fold_left f acc xs] folds a function [f] over a sparse list [xs] *)
+let rec fold_left f acc = function
+  | [] ->
+      acc
+  | (_, x) :: tl ->
+      fold_left f (f acc x) tl
+
 (** [get index xs] gets the value at [index] of a sparse list [xs]. *)
 let rec get index = function
   | [] ->
