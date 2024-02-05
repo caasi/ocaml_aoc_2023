@@ -1,27 +1,21 @@
+module Item2D = Item_2d
+
 type item = Gap of int | Num of int * int | Sym
 
 type row = item list
 
 type t = row list
 
-type item_coord = NumCoord of int * int * int * int | SymCoord of int * int
-
-let get_value = function
-  | NumCoord (_, _, value, _) ->
-      value
-  | SymCoord (_, _) ->
-      1
-
-let item_coord_of_schematic schema =
+let to_item_2d_list schema =
   let rec aux_row acc y x = function
     | [] ->
         acc
     | Gap width :: rest ->
         aux_row acc y (x + width) rest
     | Num (value, width) :: rest ->
-        aux_row (NumCoord (x, y, value, width) :: acc) y (x + width) rest
+        aux_row (Item2D.Num (x, y, value, width) :: acc) y (x + width) rest
     | Sym :: rest ->
-        aux_row (SymCoord (x, y) :: acc) y (x + 1) rest
+        aux_row (Item2D.Sym (x, y) :: acc) y (x + 1) rest
   in
   let rec aux acc y = function
     | [] ->
@@ -30,15 +24,6 @@ let item_coord_of_schematic schema =
         aux (aux_row acc y 0 row) (y + 1) rest
   in
   aux [] 0 schema
-
-let range_of_item_coord = function
-  | NumCoord (x, y, _, width) ->
-      List.concat
-        [ List.init (width + 2) (fun i -> (x + i - 1, y - 1))
-        ; [(x - 1, y); (x + width, y)]
-        ; List.init (width + 2) (fun i -> (x + i - 1, y + 1)) ]
-  | SymCoord (_, _) ->
-      []
 
 (* parsers *)
 open Angstrom
@@ -78,15 +63,6 @@ let pp_print_row fmt row =
 
 let pp_print_schematic fmt schema =
   pp_print_list ~pp_sep:pp_print_newline pp_print_row fmt schema
-
-let pp_print_item_coord fmt = function
-  | NumCoord (x, y, value, width) ->
-      fprintf fmt "NumCoord (%d, %d, %d, %d)" x y value width
-  | SymCoord (x, y) ->
-      fprintf fmt "SymCoord (%d, %d)" x y
-
-let pp_print_item_coords fmt coords =
-  pp_print_list pp_print_item_coord fmt coords
 
 (* evaluator *)
 let eval str =

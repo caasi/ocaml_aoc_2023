@@ -4,6 +4,7 @@
 module Cube = Cube
 
 module Schematic = Schematic
+module Item2D = Item_2d
 module SparseList = Sparse_list
 module SparseMap = Sparse_map
 
