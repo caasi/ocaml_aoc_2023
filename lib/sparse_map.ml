@@ -23,5 +23,18 @@ let fold_left f = SL.fold_left (SL.fold_left f)
 let get x y map =
   match SL.get y map with Some row -> SL.get x row | None -> None
 
+(* pretty printers *)
 let pp_print ?(pp_sep = Format.pp_print_cut) pp_v =
   SL.pp_print ~pp_sep (SL.pp_print ~pp_sep pp_v)
+
+(* lenses *)
+open Lens
+
+(** [at x y map] creates a lens to focus on a value at (x, y) of a [map]. *)
+let at x y =
+  { get=
+      (fun map ->
+        match SL.get y map with Some row -> SL.get x row | None -> None )
+  ; set=
+      (fun opt map ->
+        match opt with None -> map | Some v -> update x y (fun _ -> v) map ) }

@@ -17,7 +17,7 @@
  (name ocaml_aoc_2023)
  (synopsis "Advent of Code 2023")
  (description "Solving Advent of Code 2023 in OCaml")
- (depends ocaml dune lwt_ppx angstrom)
+ (depends ocaml dune lwt_ppx angstrom lens)
  (tags
   ("Advent of Code" aoc)))
 

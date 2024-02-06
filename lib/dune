@@ -1,3 +1,3 @@
 (library
  (name aoc)
- (libraries lwt.unix angstrom))
+ (libraries lwt.unix angstrom lens))

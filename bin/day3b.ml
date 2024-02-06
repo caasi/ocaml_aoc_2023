@@ -13,14 +13,27 @@ let sparse_map_of_item_2d_list list =
   in
   aux SparseMap.empty list
 
+open Lens
+
+(** [list_apply ls] creates a lens from lenses [ls]. Each lens of [ls] is
+    focused on the same input. So you can get multiple values as a list from it
+    or update it with a value list. All new values will be updated to the same
+    input. *)
+let list_apply ls =
+  { get= (fun a -> List.map (fun l -> l.get a) ls)
+  ; set= (fun bs a -> List.fold_left2 (fun acc l b -> l.set b acc) a ls bs) }
+
 let hit sparse_map item =
   let points = Item2D.surrounded_points item in
-  let test_points x y =
-    points |> List.map (fun (x1, y1) -> x = x1 && y = y1) |> List.exists Fun.id
+  (* a lens list to access different [points] of the same map *)
+  let lens_list = points |> List.map (fun (x, y) -> SparseMap.at x y) in
+  (* a function to update just one hits inside a sparse map *)
+  let update_hits opt =
+    match opt with Some hits -> Some (Item2D.value item :: hits) | None -> opt
   in
-  SparseMap.map_index
-    (fun x y hits -> if test_points x y then Item2D.value item :: hits else hits)
-    sparse_map
+  let open Lens in
+  let open Infix in
+  sparse_map |> list_apply lens_list ^%= List.map update_hits
 
 (* main *)
 let main () =
