@@ -7,6 +7,7 @@ module Schematic = Schematic
 module Item2D = Item_2d
 module SparseList = Sparse_list
 module SparseMap = Sparse_map
+module Card = Card
 
 (** [explode_string s] transforms string [s] into a char list. *)
 let explode_string s = List.init (String.length s) (String.get s)
