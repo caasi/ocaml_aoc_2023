@@ -36,8 +36,8 @@ let pp_print_own_numbers fmt xs =
   fprintf fmt "Own: [%a]" (pp_print_list ~pp_sep:list_sep pp_print_int) xs
 
 let pp_print_card fmt (card, xs, ys) =
-  fprintf fmt "Card %d: %a, %a" card pp_print_own_numbers xs
-    pp_print_winning_numbers ys
+  fprintf fmt "Card %d: %a, %a" card pp_print_winning_numbers xs
+    pp_print_own_numbers ys
 
 let pp_print_game fmt game =
   fprintf fmt "%a" (pp_print_list ~pp_sep:pp_print_newline pp_print_card) game
