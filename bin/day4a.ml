@@ -2,18 +2,8 @@ open Aoc
 
 (* computations *)
 let score (card : Card.t) =
-  let _, winning_nums, own_nums = card in
-  let init_nums = winning_nums |> List.map (fun n -> (n, true)) in
-  let hash = Hashtbl.of_seq (List.to_seq init_nums) in
-  let rec aux nums =
-    match nums with
-    | [] ->
-        0
-    | n :: ns -> (
-      match Hashtbl.find_opt hash n with Some _ -> 1 + aux ns | None -> aux ns )
-  in
-  let match_count = aux own_nums in
-  if match_count = 0 then 0 else Int.shift_left 1 (match_count - 1)
+  let s = Card.score card in
+  if s = 0 then 0 else Int.shift_left 1 (s - 1)
 
 (* main *)
 let main () =

@@ -2,6 +2,13 @@ type t = int * int list * int list
 
 let cid ((x, _, _) : t) = x
 
+let score (card : t) =
+  let _, winning_nums, own_nums = card in
+  let init_nums = winning_nums |> List.map (fun n -> (n, ())) in
+  let hash = Hashtbl.of_seq (List.to_seq init_nums) in
+  let hit n = match Hashtbl.find_opt hash n with Some _ -> 1 | None -> 0 in
+  List.fold_left (fun acc n -> acc + hit n) 0 own_nums
+
 let is_digit = function '0' .. '9' -> true | _ -> false
 
 (* parsers *)
