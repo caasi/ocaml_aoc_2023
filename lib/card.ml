@@ -1,5 +1,7 @@
 type t = int * int list * int list
 
+let cid ((x, _, _) : t) = x
+
 let is_digit = function '0' .. '9' -> true | _ -> false
 
 (* parsers *)

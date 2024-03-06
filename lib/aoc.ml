@@ -18,3 +18,5 @@ let implode_string l = String.of_seq (List.to_seq l)
 (** [lwt_stdin_map f] reads lines from stdin and map each line with a function
     [f]. *)
 let lwt_stdin_map f = Lwt_io.read_lines Lwt_io.stdin |> Lwt_stream.map f
+
+let range a b = List.init (b - a) (fun i -> a + i)
