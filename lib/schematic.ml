@@ -27,18 +27,19 @@ let to_item_2d_list schema =
 
 (* parsers *)
 open Angstrom
+module P = Parser
 
 let is_gap = function '.' -> true | _ -> false
 
-let is_digit = function '0' .. '9' -> true | _ -> false
-
 let is_symbol c =
-  (not (is_gap c)) && (not (is_digit c)) && c <> '\n' && c <> '\r'
+  (not (is_gap c)) && (not (P.is_digit c)) && c <> '\n' && c <> '\r'
 
 let gap = lift (fun s -> Gap (String.length s)) (take_while1 is_gap)
 
 let num =
-  lift (fun s -> Num (int_of_string s, String.length s)) (take_while1 is_digit)
+  lift
+    (fun s -> Num (int_of_string s, String.length s))
+    (take_while1 P.is_digit)
 
 let sym = lift (fun _ -> Sym) (skip is_symbol)
 

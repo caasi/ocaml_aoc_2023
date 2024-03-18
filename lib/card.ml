@@ -9,27 +9,18 @@ let score (card : t) =
   let hit n = match Hashtbl.find_opt hash n with Some _ -> 1 | None -> 0 in
   List.fold_left (fun acc n -> acc + hit n) 0 own_nums
 
-let is_digit = function '0' .. '9' -> true | _ -> false
-
 (* parsers *)
 open Angstrom
+module P = Parser
 
-let spaces = skip_while (function ' ' -> true | _ -> false)
-
-let num = take_while1 is_digit >>| int_of_string
-
-let num_list = sep_by1 spaces num
-
-let space = char ' '
-
-let card_prefix = string "Card" *> spaces *> num <* string ":" <* spaces
+let card_prefix = string "Card" *> P.spaces *> P.num <* string ":" <* P.spaces
 
 let card =
   lift4
     (fun card xs _ ys -> (card, xs, ys))
-    card_prefix num_list
-    (spaces *> string "|" <* spaces)
-    num_list
+    card_prefix P.num_list
+    (P.spaces *> string "|" <* P.spaces)
+    P.num_list
 
 let game = sep_by1 end_of_line card
 
